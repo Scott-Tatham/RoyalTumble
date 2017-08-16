@@ -37,8 +37,6 @@ public class MatchManager : MonoBehaviour
             Destroy(this);
         }
 
-        DontDestroyOnLoad(gameObject);
-
         chars = new string[3]
         {
             "BallMan",

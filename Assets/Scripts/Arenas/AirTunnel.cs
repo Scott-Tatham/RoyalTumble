@@ -12,7 +12,7 @@ public class AirTunnel : MonoBehaviour
         if (_col.GetComponent<Character>() != null)
         {
             float distance = _col.transform.position.y > 1 ? _col.transform.position.y : 1;
-            _col.attachedRigidbody.AddForce(((Vector3.up/* * (-_col.attachedRigidbody.velocity.y / 2)*/ + _col.GetComponent<Character>().GetOffset()).normalized * (fanForce / (1 + distance * distance * distance * distance))));
+            _col.attachedRigidbody.AddForce((((Vector3.up/* * (-_col.attachedRigidbody.velocity.y / 2)*/).normalized) * (fanForce / (1 + distance * distance * distance * distance))), ForceMode.Force);
         }
     }
 }
