@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: 291e89897a4ff2b4488c38c42193d8a8
+timeCreated: 1498804309
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Arena_Edge
+    100002: arena_edge
+    100004: arena_edge1
+    100006: arena_edge2
+    100008: arena_edge3
+    100010: arena_edge4
+    100012: arena_edge5
+    100014: arena_edge6
+    100016: arena_edge7
+    100018: Bowl
+    100020: chain
+    100022: //RootNode
+    100024: rock
+    100026: rock1
+    100028: rock2
+    100030: rock3
+    100032: rock4
+    100034: rock5
+    100036: rock6
+    100038: Rocks
+    100040: sharp_rock
+    100042: sharp_rock1
+    100044: sharp_rock3
+    100046: sharp_rock4
+    100048: sharp_rock5
+    100050: sharp_rock6
+    100052: sharp_rock7
+    100054: Sharp_Rocks
+    100056: sml_rock
+    100058: sml_rock1
+    100060: sml_rock2
+    100062: sml_rock3
+    100064: Sml_Rocks
+    100066: volcano
+    400000: Arena_Edge
+    400002: arena_edge
+    400004: arena_edge1
+    400006: arena_edge2
+    400008: arena_edge3
+    400010: arena_edge4
+    400012: arena_edge5
+    400014: arena_edge6
+    400016: arena_edge7
+    400018: Bowl
+    400020: chain
+    400022: //RootNode
+    400024: rock
+    400026: rock1
+    400028: rock2
+    400030: rock3
+    400032: rock4
+    400034: rock5
+    400036: rock6
+    400038: Rocks
+    400040: sharp_rock
+    400042: sharp_rock1
+    400044: sharp_rock3
+    400046: sharp_rock4
+    400048: sharp_rock5
+    400050: sharp_rock6
+    400052: sharp_rock7
+    400054: Sharp_Rocks
+    400056: sml_rock
+    400058: sml_rock1
+    400060: sml_rock2
+    400062: sml_rock3
+    400064: Sml_Rocks
+    400066: volcano
+    2300000: arena_edge
+    2300002: arena_edge1
+    2300004: arena_edge2
+    2300006: arena_edge3
+    2300008: arena_edge4
+    2300010: arena_edge5
+    2300012: arena_edge6
+    2300014: arena_edge7
+    2300016: Bowl
+    2300018: chain
+    2300020: rock
+    2300022: rock1
+    2300024: rock2
+    2300026: rock3
+    2300028: rock4
+    2300030: rock5
+    2300032: rock6
+    2300034: sharp_rock
+    2300036: sharp_rock1
+    2300038: sharp_rock3
+    2300040: sharp_rock4
+    2300042: sharp_rock5
+    2300044: sharp_rock6
+    2300046: sharp_rock7
+    2300048: sml_rock
+    2300050: sml_rock1
+    2300052: sml_rock2
+    2300054: sml_rock3
+    2300056: volcano
+    3300000: arena_edge
+    3300002: arena_edge1
+    3300004: arena_edge2
+    3300006: arena_edge3
+    3300008: arena_edge4
+    3300010: arena_edge5
+    3300012: arena_edge6
+    3300014: arena_edge7
+    3300016: Bowl
+    3300018: chain
+    3300020: rock
+    3300022: rock1
+    3300024: rock2
+    3300026: rock3
+    3300028: rock4
+    3300030: rock5
+    3300032: rock6
+    3300034: sharp_rock
+    3300036: sharp_rock1
+    3300038: sharp_rock3
+    3300040: sharp_rock4
+    3300042: sharp_rock5
+    3300044: sharp_rock6
+    3300046: sharp_rock7
+    3300048: sml_rock
+    3300050: sml_rock1
+    3300052: sml_rock2
+    3300054: sml_rock3
+    3300056: volcano
+    4300000: Bowl
+    4300002: volcano
+    4300004: sml_rock
+    4300006: sml_rock1
+    4300008: sml_rock2
+    4300010: sml_rock3
+    4300012: sharp_rock4
+    4300014: sharp_rock3
+    4300016: sharp_rock1
+    4300018: sharp_rock
+    4300020: sharp_rock5
+    4300022: sharp_rock6
+    4300024: sharp_rock7
+    4300026: arena_edge
+    4300028: arena_edge1
+    4300030: arena_edge2
+    4300032: arena_edge3
+    4300034: arena_edge4
+    4300036: arena_edge5
+    4300038: arena_edge6
+    4300040: arena_edge7
+    4300042: chain
+    4300044: rock2
+    4300046: rock1
+    4300048: rock
+    4300050: rock3
+    4300052: rock4
+    4300054: rock5
+    4300056: rock6
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
