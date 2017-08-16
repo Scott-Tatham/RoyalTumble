@@ -1,2 +1,2 @@
 # RoyalTumble
-Aerial gladiatorial battles game.
+Aerial gladiatorial battle game.
