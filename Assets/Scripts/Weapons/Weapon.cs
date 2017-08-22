@@ -5,22 +5,32 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    string weaponName;//, meshPath, materialPath;
     Rigidbody rb;
-    GameManager gm;
-    WeaponFactory wf;
+    //GameManager gm;
+    //WeaponFactory wf;
+    List<Action> weaponE;
 
-    List<Action> WeaponE = new List<Action>();
+    public string GetWeaponName() { return weaponName; }
+    //public string GetMeshPath() { return meshPath; }
+    //public string GetMaterialPath() { return materialPath; }
+
+    public void SetWeaponName(string weaponName) { this.weaponName = weaponName; }
+    //public void SetMeshPath(string meshPath) { this.meshPath = meshPath; }
+    //public void SetMaterialPath(string materialPath) { this.materialPath = materialPath; }
 
     void Start()
     {
+        weaponE = new List<Action>();
         rb = GetComponent<Rigidbody>();
-        gm = GameManager.GetInstance();
-        wf = gm.GetWeaponFactory();
+        //gm = GameManager.GetInstance();
+        //wf = gm.GetWeaponFactory();
 
         // Add effectors by indexing from json file to create weapon.
         // E.g.
-        WeaponE.Add(wf.GetEffect(0));
-        WeaponE.Add(wf.GetEffect(1));
+        // Oi nah I got editor for this now instead.
+        //weaponE.Add(wf.GetEffect(0));
+        //weaponE.Add(wf.GetEffect(1));
     }
 
     void OnCollisionEnter(Collision _col)
@@ -30,7 +40,7 @@ public class Weapon : MonoBehaviour
             Debug.Log(_col.impulse.magnitude);
             _col.gameObject.GetComponent<IHealth>().DealDamage(_col.impulse.magnitude);
 
-            foreach (Action effect in WeaponE)
+            foreach (Action effect in weaponE)
             {
                 Debug.Log("Here");
                 effect();
