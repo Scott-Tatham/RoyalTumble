@@ -13,10 +13,11 @@ public class Character : MonoBehaviour, IHealth
     Vector3 offset;
     Vector3 marker;
     Rigidbody rb;
-    List<GameObject> weaponPoints;
+    WeaponFactory wf;
+    List<GameObject> weapons;
 
     public Vector3 GetOffset() { return offset; }
-    public List<GameObject> GetWeaponPoints() { return weaponPoints; }
+    public List<GameObject> GetWeapons() { return weapons; }
 
     public void SetPlayerNo(int _playerNo) { playerNo = _playerNo; }
 
@@ -25,7 +26,9 @@ public class Character : MonoBehaviour, IHealth
         canBoost = true;
         canPulse = true;
         rb = GetComponent<Rigidbody>();
-        weaponPoints = new List<GameObject>();
+        wf = GameManager.GetInstance().GetWeaponFactory();
+        weapons = new List<GameObject>();
+        wf.GenerateWeapon(0, BuildWeapon);
     }
 
     void Update()
@@ -135,6 +138,12 @@ public class Character : MonoBehaviour, IHealth
         }
 
         rb.MovePosition(transform.position + new Vector3(xMove, 0, zMove));
+    }
+
+    void BuildWeapon(Weapon weapon)
+    {
+        weapons.Add(weapon.gameObject);
+        //weapon.transform.position = Vector3.zero;
     }
 
     IEnumerator BoostCD()
