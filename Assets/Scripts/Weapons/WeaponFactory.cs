@@ -89,8 +89,8 @@ public class WeaponFactory
         weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
         weaponObj = (GameObject)Resources.Load("Prefabs/Weapon");
         // Replace int with an id from json.
-        wEffects.Add(0, new WeaponEffect("Name", () => WeaponEffects.DoThat(1)));
-        wEffects.Add(1, new WeaponEffect("NameOfEffect", () => WeaponEffects.DoThis(18)));
+        wEffects.Add(0, new WeaponEffect("DoThat", () => WeaponEffects.DoThat(1)));
+        wEffects.Add(1, new WeaponEffect("DoThis", () => WeaponEffects.DoThis(18)));
     }
 
     public void GenerateWeapon(int weaponID, Action<Weapon> callback)

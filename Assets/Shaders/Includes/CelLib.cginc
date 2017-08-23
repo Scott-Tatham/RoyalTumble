@@ -1,5 +1,5 @@
-#ifndef CELLLIB_INCLUDED
-#define CELLLIB_INCLUDED
+#ifndef CELLIB_INCLUDED
+#define CELLIB_INCLUDED
 
 #include "UnityCG.cginc"
 
@@ -39,12 +39,23 @@ VO vert(VI vi)
 fixed4 frag(VO i) : SV_Target
 {
 	half3 norm = dot(i.wNorm, normalize(_WorldSpaceLightPos0).xyz);
-	fixed3 band = tex2D(_Palette, fixed2((-norm + fixed3(0.5, 0.5, 0.5)).z, i.uv.y));
+	fixed3 band = tex2D(_Palette, fixed2(((-norm + fixed3(1.0, 1.0, 1.0)).z * 0.5), i.uv.y));
 	fixed4 tex = tex2D(_MainTex, i.uv.xy);
 	fixed4 pixel;
-	tex.a = floor(tex.a);
 
-	if (tex.a != 1)
+#if defined (_FLOOR_ALPHA)
+	tex.a = floor(tex.a);
+#endif
+
+#if defined (_ROUND_ALPHA)
+	tex.a = round(tex.a);
+#endif
+
+#if defined (_CEIL_ALPHA)
+	tex.a = ceil(tex.a);
+#endif
+
+	if (tex.a == 0)
 	{
 		pixel = fixed4(band, 1);
 	}

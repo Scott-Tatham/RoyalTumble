@@ -1,4 +1,4 @@
-﻿Shader "Tumble/Cell"
+﻿Shader "Tumble/Cel"
 {
 	Properties
 	{
@@ -13,7 +13,7 @@
 			"Lightmode" = "ForwardBase"
 			"Queue" = "Transparent"
 			"IgnoreProjector" = "True"
-			"RenderType" = "Transparent"
+			//"RenderType" = "Transparent"
 			"CanUseSpriteAtlas" = "True"
 		}
 
@@ -26,12 +26,18 @@
 			
 			CGPROGRAM
 
+			#pragma shader_feature _FLOOR_ALPHA
+			#pragma shader_feature _ROUND_ALPHA
+			#pragma shader_feature _CEIL_ALPHA
+
 			#pragma vertex vert
 			#pragma fragment frag
 			
-			#include "../Shaders/Includes/CellLib.cginc"
+			#include "../Shaders/Includes/CelLib.cginc"
 			
 			ENDCG
 		}
 	}
+
+	CustomEditor "CelEditor"
 }

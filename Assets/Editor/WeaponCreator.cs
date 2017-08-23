@@ -13,8 +13,8 @@ public class WeaponCreator : EditorWindow
     string weaponName;
     Mesh weaponMesh;
     Material weaponMaterial;
-    JsonData weaponData;
     WeaponFactory weaponFactory;
+    List<WeaponValues> weaponData;
     Dictionary<int, int> selectedEffects;
 
     [MenuItem("Window/Weapon Creator")]
@@ -27,13 +27,23 @@ public class WeaponCreator : EditorWindow
     {
         if (File.Exists("Assets/StreamData/WeaponData.json"))
         {
-            weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
+            string jsonOpen = File.ReadAllText("Assets/StreamData/WeaponData.json");
+
+            if (JsonMapper.ToObject<List<WeaponValues>>(jsonOpen) != null)
+            {
+                weaponData = JsonMapper.ToObject<List<WeaponValues>>(jsonOpen);
+            }
+
+            else
+            {
+                weaponData = new List<WeaponValues>();
+            }
         }
 
         else
         {
             File.Create("Assets/StreamData/WeaponData.json");
-            weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
+            weaponData = new List<WeaponValues>();
             Debug.LogWarning("Created new Weapon Data file. Was this intended?");
         }
 
@@ -53,13 +63,12 @@ public class WeaponCreator : EditorWindow
 
         if (GUILayout.Button("Delete Weapon"))
         {
-            weaponData[selectedWeapon].Clear();
+            weaponData.RemoveAt(selectedWeapon);
         }
         
         weaponName = EditorGUILayout.TextField("Weapon Name", weaponName);
         weaponMesh = (Mesh)EditorGUILayout.ObjectField("Weapon Mesh", weaponMesh, typeof(Mesh), false);
         weaponMaterial = (Material)EditorGUILayout.ObjectField("Weapon Material", weaponMaterial, typeof(Material), false);
-        //AssetDatabase.GetAssetPath(weaponMaterial);
 
         if (!newEffect)
         {
@@ -86,7 +95,13 @@ public class WeaponCreator : EditorWindow
         if (confirm)
         {
             Debug.Log("Yes");
-            //File.WriteAllLines("Assets/StreamData/WeaponData.json", );
+            WeaponValues wv = new WeaponValues(weaponName, weaponMesh != null ? AssetDatabase.GetAssetPath(weaponMesh) : "", weaponMaterial != null ? AssetDatabase.GetAssetPath(weaponMaterial) : "");
+            weaponData.Add(wv);
+            //Debug.Log(weaponData[0][0]);
+            //weaponData[0].Add(weaponName);
+            //weaponData[0].Add(weaponMesh);
+            //weaponData[0].Add(weaponMaterial);
+            File.WriteAllText("Assets/StreamData/WeaponData.json", JsonMapper.ToJson(weaponData));
             weaponName = "";
             weaponMesh = null;
             weaponMaterial = null;
@@ -99,5 +114,19 @@ public class WeaponCreator : EditorWindow
             weaponMesh = null;
             weaponMaterial = null;
         }
+    }
+}
+
+public struct WeaponValues
+{
+    public string weaponName;
+    public string weaponMesh;
+    public string weaponMaterial;
+
+    public WeaponValues(string weaponName, string weaponMesh, string weaponMaterial)
+    {
+        this.weaponName = weaponName;
+        this.weaponMesh = weaponMesh;
+        this.weaponMaterial = weaponMaterial;
     }
 }
