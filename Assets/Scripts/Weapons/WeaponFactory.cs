@@ -7,14 +7,17 @@ using UnityEngine;
 
 public struct WeaponEffect
 {
+    int id;
     string effectName;
     Action effectFunction;
 
+    public int GetID() { return id; }
     public string GetName() { return effectName; }
     public Action GetEffect() { return effectFunction; }
 
-    public WeaponEffect(string effectName, Action effectFunction)
+    public WeaponEffect(int id, string effectName, Action effectFunction)
     {
+        this.id = id;
         this.effectName = effectName;
         this.effectFunction = effectFunction;
     }
@@ -24,46 +27,46 @@ public class WeaponFactory
 {
     GameObject weaponObj;
     JsonData weaponData;
-    Dictionary<int, WeaponEffect> wEffects = new Dictionary<int, WeaponEffect>();
+    List<WeaponEffect> wEffects = new List<WeaponEffect>();
 
     public string[] GetEffectNames()
     {
         List<string> weaponNames = new List<string>();
 
-        foreach (KeyValuePair<int, WeaponEffect> we in wEffects)
+        for (int i = 0; i < wEffects.Count; i++)
         {
-            weaponNames.Add(we.Value.GetName());
+            weaponNames.Add(wEffects[i].GetName());
         }
 
         return weaponNames.ToArray();
     }
 
-    public string[] GetEffectNames(Dictionary<int, int> uniqueIDs)
+    public string[] GetEffectNames(List<int> uniqueIDs)
     {
         List<string> weaponNames = new List<string>();
 
-        foreach (KeyValuePair<int, WeaponEffect> we in wEffects)
+        for (int i = 0; i < wEffects.Count; i++)
         {
-            if (!uniqueIDs.ContainsValue(we.Key))
+            if (!uniqueIDs.Contains(wEffects[i].GetID()))
             {
-                weaponNames.Add(we.Value.GetName());
+                weaponNames.Add(wEffects[i].GetName());
             }
         }
 
         return weaponNames.ToArray();
     }
 
-    public string GetEffectName(int index)
+    public string GetEffectName(int id)
     {
-        int nameIndex = 0;
-        string[] weaponNames = new string[wEffects.Count];
-
-        foreach (KeyValuePair<int, WeaponEffect> we in wEffects)
+        for (int i = 0; i < wEffects.Count; i++)
         {
-            weaponNames[nameIndex] = we.Value.GetName();
+            if (id == wEffects[i].GetID())
+            {
+                return wEffects[i].GetName();
+            }
         }
 
-        return weaponNames[index];
+        return null;
     }
 
     public Action GetEffect(int index)
@@ -73,11 +76,11 @@ public class WeaponFactory
 
     public int GetEffectID(string effect)
     {
-        foreach (KeyValuePair<int, WeaponEffect> we in wEffects)
+        for (int i = 0; i < wEffects.Count; i++)
         {
-            if (we.Value.GetName() == effect)
+            if (wEffects[i].GetName() == effect)
             {
-                return we.Key;
+                return wEffects[i].GetID();
             }
         }
 
@@ -88,9 +91,8 @@ public class WeaponFactory
     {
         weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
         weaponObj = (GameObject)Resources.Load("Prefabs/Weapon");
-        // Replace int with an id from json.
-        wEffects.Add(0, new WeaponEffect("DoThat", () => WeaponEffects.DoThat(1)));
-        wEffects.Add(1, new WeaponEffect("DoThis", () => WeaponEffects.DoThis(18)));
+        wEffects.Add(new WeaponEffect(0, "DoThat", () => WeaponEffects.DoThat(0)));
+        wEffects.Add(new WeaponEffect(1, "DoThis", () => WeaponEffects.DoThis(0)));
     }
 
     public void GenerateWeapon(int weaponID, Action<Weapon> callback)
@@ -99,6 +101,23 @@ public class WeaponFactory
         weapon.SetWeaponName((string)weaponData[weaponID][0]);
         weapon.GetComponent<MeshFilter>().mesh = (Mesh)Resources.Load((string)weaponData[weaponID][1]);
         weapon.GetComponent<Renderer>().material = (Material)Resources.Load((string)weaponData[weaponID][2]);
+
+        for (int i = 0; i < weaponData[weaponID][3].Count; i++)
+        {
+            switch ((int)weaponData[weaponID][3][i])
+            {
+                case 0:
+                    weapon.AddWeaponEffect(() => WeaponEffects.DoThat((int)weaponData[weaponID][4][i]));
+
+                    break;
+
+                case 1:
+                    weapon.AddWeaponEffect(() => WeaponEffects.DoThat((int)weaponData[weaponID][4][i]));
+
+                    break;
+            }
+        }
+
         callback(weapon);
         // Call instantiation on character.
     }

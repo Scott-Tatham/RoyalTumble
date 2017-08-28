@@ -5,32 +5,20 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    string weaponName;//, meshPath, materialPath;
+    string weaponName;
     Rigidbody rb;
-    //GameManager gm;
-    //WeaponFactory wf;
+    WeaponFactory wf;
     List<Action> weaponE;
 
     public string GetWeaponName() { return weaponName; }
-    //public string GetMeshPath() { return meshPath; }
-    //public string GetMaterialPath() { return materialPath; }
 
     public void SetWeaponName(string weaponName) { this.weaponName = weaponName; }
-    //public void SetMeshPath(string meshPath) { this.meshPath = meshPath; }
-    //public void SetMaterialPath(string materialPath) { this.materialPath = materialPath; }
+    public void AddWeaponEffect(Action weaponE) { this.weaponE.Add(weaponE); }
 
     void Start()
     {
         weaponE = new List<Action>();
         rb = GetComponent<Rigidbody>();
-        //gm = GameManager.GetInstance();
-        //wf = gm.GetWeaponFactory();
-
-        // Add effectors by indexing from json file to create weapon.
-        // E.g.
-        // Oi nah I got editor for this now instead.
-        //weaponE.Add(wf.GetEffect(0));
-        //weaponE.Add(wf.GetEffect(1));
     }
 
     void OnCollisionEnter(Collision _col)

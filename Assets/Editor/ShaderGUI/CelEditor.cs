@@ -13,6 +13,7 @@ public enum AlphaOperator
 
 public class CelEditor : ShaderGUI
 {
+    bool normal, pointLight;
     AlphaOperator alpha;
     MaterialEditor materialEditor;
     MaterialProperty[] properties;
@@ -22,14 +23,13 @@ public class CelEditor : ShaderGUI
         this.materialEditor = materialEditor;
         this.properties = properties;
         SetCelKeywords();
-        Alpha();
+        Properties();
 
-        base.OnGUI(materialEditor, properties);
+        //base.OnGUI(materialEditor, properties);
     }
 
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
     {
-        SetCelKeywords();
         base.AssignNewShaderToMaterial(material, oldShader, newShader);
 
         if (oldShader.name != "Cel")
@@ -66,6 +66,9 @@ public class CelEditor : ShaderGUI
             {
                 alpha = AlphaOperator.OFF;
             }
+
+            normal = m.IsKeywordEnabled("_NORMAL");
+            pointLight = m.IsKeywordEnabled("_POINT_LIGHT");
         }
     }
 
@@ -103,17 +106,42 @@ public class CelEditor : ShaderGUI
 
                     break;
             }
+
+            if (normal)
+            {
+                m.EnableKeyword("_NORMAL");
+            }
+
+            else
+            {
+                m.DisableKeyword("_NORMAL");
+            }
+
+            if (pointLight)
+            {
+                m.EnableKeyword("_POINT_LIGHT");
+            }
+
+            else
+            {
+                m.DisableKeyword("_POINT_LIGHT");
+            }
         }
     }
 
-    void Alpha()
+    void Properties()
     {
         EditorGUI.BeginChangeCheck();
-        alpha = (AlphaOperator)EditorGUILayout.EnumPopup("Use Light Colour", alpha);
+        alpha = (AlphaOperator)EditorGUILayout.EnumPopup("Alpha Operator", alpha);
+        pointLight = EditorGUILayout.Toggle("Recieve PointLights", pointLight);
+        materialEditor.PropertiesDefaultGUI(properties);
+        MaterialProperty mp = FindProperty("_Normal");
+        normal = mp.textureValue == null ? false : true;
 
         if (EditorGUI.EndChangeCheck())
         {
             SetKeyWords();
         }
+
     }
 }
