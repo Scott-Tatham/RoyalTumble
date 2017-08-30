@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 8031314853b26d144a4c67c5113d7751
-timeCreated: 1503379010
+timeCreated: 1503391126
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
@@ -47,16 +47,16 @@ ModelImporter:
     3300014: Spear
     3300016: SpikyBat
     3300018: Sword
-    4300000: Axe
-    4300002: Mace
-    4300004: Spear
-    4300006: Sword
-    4300008: Slashthing
-    4300010: DoubleAxe
-    4300012: Dagger
-    4300014: LongishSword
-    4300016: Hammer
-    4300018: SpikyBat
+    4300000: Spear
+    4300002: Sword
+    4300004: Slashthing
+    4300006: DoubleAxe
+    4300008: Dagger
+    4300010: LongishSword
+    4300012: Hammer
+    4300014: SpikyBat
+    4300016: Axe
+    4300018: Mace
   materials:
     importMaterials: 1
     materialName: 0

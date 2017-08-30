@@ -1,8 +1,9 @@
-﻿Shader "Tumble/Cell"
+﻿Shader "Tumble/Cel"
 {
 	Properties
 	{
-		_MainTex("Detail", 2D) = "" {}
+		_MainTex("Detail Map", 2D) = "" {}
+		_Normal("Normal Map", 2D) = "bump" {}
 		_Palette("Palette", 2D) = "white" {}
 	}
 
@@ -13,7 +14,6 @@
 			"Lightmode" = "ForwardBase"
 			"Queue" = "Transparent"
 			"IgnoreProjector" = "True"
-			"RenderType" = "Transparent"
 			"CanUseSpriteAtlas" = "True"
 		}
 
@@ -26,12 +26,20 @@
 			
 			CGPROGRAM
 
+			#pragma shader_feature _NORMAL
+			#pragma shader_feature _FLOOR_ALPHA
+			#pragma shader_feature _ROUND_ALPHA
+			#pragma shader_feature _CEIL_ALPHA
+			#pragma shader_feature _POINT_LIGHT
+
 			#pragma vertex vert
 			#pragma fragment frag
 			
-			#include "../Shaders/Includes/CellLib.cginc"
+			#include "../Shaders/Includes/CelLib.cginc"
 			
 			ENDCG
 		}
 	}
+
+	CustomEditor "CelEditor"
 }
