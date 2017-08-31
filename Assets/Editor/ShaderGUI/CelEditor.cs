@@ -13,7 +13,7 @@ public enum AlphaOperator
 
 public class CelEditor : ShaderGUI
 {
-    bool normal, pointLight;
+    bool pointLight;
     AlphaOperator alpha;
     MaterialEditor materialEditor;
     MaterialProperty[] properties;
@@ -24,8 +24,6 @@ public class CelEditor : ShaderGUI
         this.properties = properties;
         SetCelKeywords();
         Properties();
-
-        //base.OnGUI(materialEditor, properties);
     }
 
     public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)
@@ -66,8 +64,7 @@ public class CelEditor : ShaderGUI
             {
                 alpha = AlphaOperator.OFF;
             }
-
-            normal = m.IsKeywordEnabled("_NORMAL");
+            
             pointLight = m.IsKeywordEnabled("_POINT_LIGHT");
         }
     }
@@ -107,16 +104,6 @@ public class CelEditor : ShaderGUI
                     break;
             }
 
-            if (normal)
-            {
-                m.EnableKeyword("_NORMAL");
-            }
-
-            else
-            {
-                m.DisableKeyword("_NORMAL");
-            }
-
             if (pointLight)
             {
                 m.EnableKeyword("_POINT_LIGHT");
@@ -135,8 +122,6 @@ public class CelEditor : ShaderGUI
         alpha = (AlphaOperator)EditorGUILayout.EnumPopup("Alpha Operator", alpha);
         pointLight = EditorGUILayout.Toggle("Recieve PointLights", pointLight);
         materialEditor.PropertiesDefaultGUI(properties);
-        MaterialProperty mp = FindProperty("_Normal");
-        normal = mp.textureValue == null ? false : true;
 
         if (EditorGUI.EndChangeCheck())
         {

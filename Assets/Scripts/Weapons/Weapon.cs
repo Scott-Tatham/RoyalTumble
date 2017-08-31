@@ -8,30 +8,27 @@ public class Weapon : MonoBehaviour
     string weaponName;
     Rigidbody rb;
     WeaponFactory wf;
-    List<Action> weaponE;
+    GameObject player;
+    List<Action<GameObject, GameObject>> weaponE;
 
     public string GetWeaponName() { return weaponName; }
 
     public void SetWeaponName(string weaponName) { this.weaponName = weaponName; }
-    public void AddWeaponEffect(Action weaponE) { this.weaponE.Add(weaponE); }
+    public void AddWeaponEffect(Action<GameObject, GameObject> weaponE) { this.weaponE.Add(weaponE); }
 
     void Start()
     {
-        weaponE = new List<Action>();
+        weaponE = new List<Action<GameObject, GameObject>>();
         rb = GetComponent<Rigidbody>();
     }
 
-    void OnCollisionEnter(Collision _col)
+    void OnCollisionEnter(Collision col)
     {
-        if (_col.gameObject.GetComponent<IHealth>() != null && _col.transform != transform.parent)
+        if (col.gameObject.GetComponent<IHealth>() != null && col.transform != transform.parent)
         {
-            Debug.Log(_col.impulse.magnitude);
-            _col.gameObject.GetComponent<IHealth>().DealDamage(_col.impulse.magnitude);
-
-            foreach (Action effect in weaponE)
+            foreach (Action<GameObject, GameObject> effect in weaponE)
             {
-                Debug.Log("Here");
-                effect();
+                effect(player, col.gameObject);
             };
         }
     }

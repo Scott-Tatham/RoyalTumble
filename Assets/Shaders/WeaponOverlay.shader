@@ -4,6 +4,7 @@
 	{
 		_TexArr("Noise Textures", 2DArray) = "" {}
 		_Colour("Colour", Color) = (1.0, 1.0, 1.0, 1.0)
+		[Hidden]_Index("Array Index", int) = 0
 	}
 	
 	SubShader
