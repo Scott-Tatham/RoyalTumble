@@ -11,7 +11,7 @@ public class WeaponCreator : EditorWindow
     bool newWeapon, newEffect;
     int selectedWeapon, selectedEffect, windowIndent, secondIndent, heightOffset, labelWidth, buttonWidth, writeFieldWidth, selectFieldWidth, weaponListWidth;
     string weaponName;
-    Vector2 scrollPos;
+    Vector2 weaponScroll, effectsScroll;
     Mesh weaponMesh;
     Material weaponMaterial;
     WeaponFactory weaponFactory;
@@ -76,7 +76,7 @@ public class WeaponCreator : EditorWindow
     {
         if (weaponData.Count > 0)
         {
-            scrollPos = GUI.BeginScrollView(new Rect(secondIndent, windowIndent, weaponListWidth + 20, position.height - 20), scrollPos, new Rect(secondIndent, windowIndent, weaponListWidth, position.height - 20 > weaponData.Count * (heightOffset + EditorGUIUtility.singleLineHeight) ? position.height - 20 : weaponData.Count * (5 + EditorGUIUtility.singleLineHeight)));
+            weaponScroll = GUI.BeginScrollView(new Rect(secondIndent, windowIndent, weaponListWidth + 20, position.height - 20), weaponScroll, new Rect(secondIndent, windowIndent, weaponListWidth, position.height - 20 > weaponData.Count * (heightOffset + EditorGUIUtility.singleLineHeight) ? position.height - 20 : weaponData.Count * (5 + EditorGUIUtility.singleLineHeight)));
 
             string[] weaponNames = new string[weaponData.Count];
 
@@ -138,27 +138,38 @@ public class WeaponCreator : EditorWindow
         weaponMesh = (Mesh)EditorGUI.ObjectField(new Rect(windowIndent, windowIndent + (4 * (heightOffset + EditorGUIUtility.singleLineHeight)), selectFieldWidth, EditorGUIUtility.singleLineHeight), "Weapon Mesh", weaponMesh, typeof(Mesh), false);
         weaponMaterial = (Material)EditorGUI.ObjectField(new Rect(windowIndent, windowIndent + (5 * (heightOffset + EditorGUIUtility.singleLineHeight)), selectFieldWidth, EditorGUIUtility.singleLineHeight), "Weapon Material", weaponMaterial, typeof(Material), false);
 
-        if (!newEffect)
+        if (weaponFactory.GetEffectNames(selectedEffects).Length > 0)
         {
-            if (GUI.Button(new Rect(windowIndent, windowIndent + (7 * (heightOffset + EditorGUIUtility.singleLineHeight)), buttonWidth, EditorGUIUtility.singleLineHeight), "Add Weapon Effect"))
+            if (!newEffect)
             {
-                newEffect = true;
+                if (GUI.Button(new Rect(windowIndent, windowIndent + (7 * (heightOffset + EditorGUIUtility.singleLineHeight)), buttonWidth, EditorGUIUtility.singleLineHeight), "Add Weapon Effect"))
+                {
+                    newEffect = true;
+                }
             }
-        }
 
-        else
-        {
-            selectedEffect = EditorGUI.Popup(new Rect(windowIndent, windowIndent + (6 * (heightOffset + EditorGUIUtility.singleLineHeight)), selectFieldWidth, EditorGUIUtility.singleLineHeight), "Effects", selectedEffect, weaponFactory.GetEffectNames(selectedEffects));
-
-            if (GUI.Button(new Rect(windowIndent, windowIndent + (7 * (heightOffset + EditorGUIUtility.singleLineHeight)), buttonWidth, EditorGUIUtility.singleLineHeight), "Confirm Effect"))
+            else
             {
-                selectedEffects.Add(weaponFactory.GetEffectID(weaponFactory.GetEffectName(selectedEffect)));
-                effectFields.Add(InstalizeEffectFields(selectedEffects[selectedEffect]));
-                newEffect = false;
+                selectedEffect = EditorGUI.Popup(new Rect(windowIndent, windowIndent + (6 * (heightOffset + EditorGUIUtility.singleLineHeight)), selectFieldWidth, EditorGUIUtility.singleLineHeight), "Effects", selectedEffect, weaponFactory.GetEffectNames(selectedEffects));
+
+                if (GUI.Button(new Rect(windowIndent, windowIndent + (7 * (heightOffset + EditorGUIUtility.singleLineHeight)), buttonWidth, EditorGUIUtility.singleLineHeight), "Confirm Effect"))
+                {
+                    selectedEffects.Add(weaponFactory.GetEffectID(weaponFactory.GetEffectNames(selectedEffects)[selectedEffect]));
+                    effectFields.Add(InstalizeEffectFields(weaponFactory.GetEffectID(weaponFactory.GetEffectNameIndexed(selectedEffect))));
+                    newEffect = false;
+                }
             }
         }
 
         float effectHeight = windowIndent + (8 * (heightOffset + EditorGUIUtility.singleLineHeight));
+        int effectLines = 0;
+
+        for (int i = 0; i < effectFields.Count; i++)
+        {
+            effectLines += effectFields[i].effectInts.Length + effectFields[i].effectFloats.Length + 2;
+        }
+        
+        effectsScroll = GUI.BeginScrollView(new Rect(windowIndent, effectHeight, position.width - (weaponListWidth + 20), position.height - (effectHeight + 20)), effectsScroll, new Rect(windowIndent, effectHeight, position.width - (weaponListWidth + 40), position.height - (effectHeight + 20) > effectLines * (heightOffset + EditorGUIUtility.singleLineHeight) ? position.height - (effectHeight + 20) : effectLines * (heightOffset + EditorGUIUtility.singleLineHeight)));
 
         for (int i = 0; i < selectedEffects.Count; i++)
         {
@@ -168,17 +179,101 @@ public class WeaponCreator : EditorWindow
             switch (selectedEffects[i])
             {
                 case 0:
-                    effectFields[i].effectInts[0] = EditorGUI.IntField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "DoThat Value", effectFields[i].effectInts[0]);
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.IntField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Ticks", effectFields[i].effectInts[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Interval", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[1] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[1], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[2] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Resist Modifier", (float)effectFields[i].effectFloats[2]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[3] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Resist Duration", (float)effectFields[i].effectFloats[3]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[2] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Resist Type", effectFields[i].effectInts[2], Enum.GetNames(typeof(DamageType)));
                     effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
 
                     break;
 
                 case 1:
-                    effectFields[i].effectInts[0] = EditorGUI.IntField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "DoThis Value", effectFields[i].effectInts[0]);
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
                     effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
-                
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Freeze Duration", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[0], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
                     break;
 
+                case 2:
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Knockback Power", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[0], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    break;
+
+                case 3:
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Shock Power", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[2] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Shock Radius", (float)effectFields[i].effectFloats[2]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[0], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    break;
+
+                case 4:
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Displace Radius", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[0], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    break;
+
+                case 5:
+                    effectFields[i].effectFloats[0] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Damage", (float)effectFields[i].effectFloats[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[0] = EditorGUI.IntField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Ticks", effectFields[i].effectInts[0]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[1] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Interval", (float)effectFields[i].effectFloats[1]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectInts[1] = EditorGUI.Popup(new Rect(windowIndent, effectHeight, selectFieldWidth, EditorGUIUtility.singleLineHeight), "Damage Type", effectFields[i].effectInts[1], Enum.GetNames(typeof(DamageType)));
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[2] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Slow Modifier", (float)effectFields[i].effectFloats[2]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    effectFields[i].effectFloats[3] = EditorGUI.FloatField(new Rect(windowIndent, effectHeight, writeFieldWidth, EditorGUIUtility.singleLineHeight), "Slow Duration", (float)effectFields[i].effectFloats[3]);
+                    effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
+
+                    break;
+                    
                 default:
                     Debug.LogException(new Exception("Effect not yet fully implemented. Harass Scott."));
 
@@ -192,6 +287,8 @@ public class WeaponCreator : EditorWindow
 
             effectHeight += heightOffset + EditorGUIUtility.singleLineHeight;
         }
+
+        GUI.EndScrollView();
     }
 
     void AssignFields()
@@ -237,14 +334,12 @@ public class WeaponCreator : EditorWindow
     {
         if (confirm)
         {
-            Debug.Log("Yes");
             SaveWeapon(newWeapon);
             ResetFields();
         }
 
         else
         {
-            Debug.Log("Nope");
             ResetFields();
         }
     }
@@ -254,10 +349,22 @@ public class WeaponCreator : EditorWindow
         switch (id)
         {
             case 0:
-                return new EffectValues(new int[1], new float[0]);
+                return new EffectValues(new int[3], new double[4]);
 
             case 1:
-                return new EffectValues(new int[1], new float[0]);
+                return new EffectValues(new int[1], new double[2]);
+
+            case 2:
+                return new EffectValues(new int[1], new double[2]);
+
+            case 3:
+                return new EffectValues(new int[1], new double[3]);
+
+            case 4:
+                return new EffectValues(new int[1], new double[2]);
+
+            case 5:
+                return new EffectValues(new int[2], new double[4]);
 
             default:
                 return new EffectValues();
@@ -286,9 +393,9 @@ public struct WeaponValues
 public struct EffectValues
 {
     public int[] effectInts;
-    public float[] effectFloats;
+    public double[] effectFloats;
 
-    public EffectValues(int[] effectInts, float[] effectFloats)
+    public EffectValues(int[] effectInts, double[] effectFloats)
     {
         this.effectInts = effectInts;
         this.effectFloats = effectFloats;

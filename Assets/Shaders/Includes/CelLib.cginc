@@ -18,20 +18,20 @@ struct VI
 struct VO
 {
 	float4 pos : SV_POSITION;
+	float3 wNorm : NORMAL;
 	half3 uv : TEXCOORD0;
 	float3 wPos : TEXCOORD1;
-	float3 wNorm : TEXCOORD2;
-	float3 tangDL : TEXCOORD3;
-	float3 tangPL : TEXCOORD4;
+	float3 tangDL : TEXCOORD2;
+	float3 tangPL : TEXCOORD3;
 };
 
 VO vert(VI vi)
 {
 	VO vo;
 	vo.pos = UnityObjectToClipPos(vi.pos.xyz);
+	vo.wNorm = UnityObjectToWorldNormal(vi.norm);
 	vo.uv = vi.uv;
 	vo.wPos = mul(unity_ObjectToWorld, vi.pos);
-	vo.wNorm = UnityObjectToWorldNormal(vi.norm);
 	float3 wTang = UnityObjectToWorldNormal(vi.tang);
 	float3 wBiTan = cross(wTang, vo.wNorm);
 	vo.tangDL = float3(dot(wTang, _WorldSpaceLightPos0), dot(wBiTan, _WorldSpaceLightPos0), dot(vo.wNorm, _WorldSpaceLightPos0));
@@ -42,15 +42,9 @@ VO vert(VI vi)
 
 fixed4 frag(VO i) : SV_Target
 {
-
-	half3 norm = i.wNorm;
-
-#if defined (_NORMAL)
 	half3 tNorm = UnpackNormal(tex2D(_Normal, i.uv));
 	tNorm.z = -tNorm.z;
-	norm = normalize(tNorm);
-#endif
-
+	half3 norm = normalize(tNorm);
 	half3 dNorm = dot(norm, normalize(i.tangDL).xyz);
 	fixed3 band = tex2D(_Palette, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
 	fixed4 tex = tex2D(_MainTex, i.uv.xy);

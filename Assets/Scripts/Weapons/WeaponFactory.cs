@@ -69,6 +69,11 @@ public class WeaponFactory
         return null;
     }
 
+    public string GetEffectNameIndexed(int index)
+    {
+        return wEffects[index].GetName();
+    }
+
     public Action GetEffect(int index)
     {
         return wEffects[index].GetEffect();
@@ -91,8 +96,12 @@ public class WeaponFactory
     {
         weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
         weaponObj = (GameObject)Resources.Load("Prefabs/Weapon");
-        wEffects.Add(new WeaponEffect(0, "DoThat", () => WeaponEffects.DoThat(0)));
-        wEffects.Add(new WeaponEffect(1, "DoThis", () => WeaponEffects.DoThis(0)));
+        wEffects.Add(new WeaponEffect(0, "Burn", () => WeaponEffects.Burn(0, 0, 0, 0, 0, DamageType.PHYSICAL, DamageType.PHYSICAL, null, null)));
+        wEffects.Add(new WeaponEffect(1, "Freeze", () => WeaponEffects.Freeze(0, 0, DamageType.PHYSICAL, null, null)));
+        wEffects.Add(new WeaponEffect(2, "Knockback", () => WeaponEffects.Knockback(0, 0, DamageType.PHYSICAL, null, null)));
+        wEffects.Add(new WeaponEffect(3, "Shockwave", () => WeaponEffects.Shockwave(0, 0, 0, DamageType.PHYSICAL, null, null)));
+        wEffects.Add(new WeaponEffect(4, "Displace", () => WeaponEffects.Displace(0, 0, DamageType.PHYSICAL, null, null)));
+        wEffects.Add(new WeaponEffect(5, "Poison", () => WeaponEffects.Poison(0, 0, 0, 0, 0, DamageType.PHYSICAL, null, null)));
     }
 
     public void GenerateWeapon(int weaponID, Action<Weapon> callback)
@@ -107,12 +116,32 @@ public class WeaponFactory
             switch ((int)weaponData[weaponID][3][i])
             {
                 case 0:
-                    weapon.AddWeaponEffect(() => WeaponEffects.DoThat((int)weaponData[weaponID][4][i]));
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Burn((float)weaponData[weaponID][4][1][0], (int)weaponData[weaponID][4][0][0], (float)weaponData[weaponID][4][1][1], (float)weaponData[weaponID][4][1][2], (float)weaponData[weaponID][4][1][3], (DamageType)(int)weaponData[weaponID][4][0][1], (DamageType)(int)weaponData[weaponID][4][0][2], player, target));
 
                     break;
 
                 case 1:
-                    weapon.AddWeaponEffect(() => WeaponEffects.DoThat((int)weaponData[weaponID][4][i]));
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Freeze((float)weaponData[weaponID][4][1][0], (float)weaponData[weaponID][4][1][1], (DamageType)(int)weaponData[weaponID][4][0][0], player, target));
+
+                    break;
+
+                case 2:
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Knockback((float)weaponData[weaponID][4][1][0], (float)weaponData[weaponID][4][1][1], (DamageType)(int)weaponData[weaponID][4][0][0], player, target));
+
+                    break;
+
+                case 3:
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Shockwave((float)weaponData[weaponID][4][1][0], (float)weaponData[weaponID][4][1][1], (float)weaponData[weaponID][4][1][2], (DamageType)(int)weaponData[weaponID][4][0][0], player, target));
+
+                    break;
+
+                case 4:
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Displace((float)weaponData[weaponID][4][1][0], (float)weaponData[weaponID][4][1][1], (DamageType)(int)weaponData[weaponID][4][0][0], player, target));
+
+                    break;
+
+                case 5:
+                    weapon.AddWeaponEffect((GameObject player, GameObject target) => WeaponEffects.Poison((float)weaponData[weaponID][4][1][0], (int)weaponData[weaponID][4][0][0], (float)weaponData[weaponID][4][1][1], (float)weaponData[weaponID][4][1][2], (float)weaponData[weaponID][4][1][3], (DamageType)(int)weaponData[weaponID][4][0][1], player, target));
 
                     break;
             }

@@ -3,6 +3,7 @@
 
 #include "UnityCG.cginc"
 
+uniform int _Index;
 uniform fixed4 _Colour;
 
 struct VI
@@ -33,6 +34,7 @@ UNITY_DECLARE_TEX2DARRAY(_TexArr);
 
 fixed4 frag(VO i) : SV_Target
 {
+	i.uv.z = _Index;
 	fixed4 tex = UNITY_SAMPLE_TEX2DARRAY(_TexArr, i.uv);
 	fixed4 pixel = tex * _Colour;
 	//pixel.a = tex.a;
