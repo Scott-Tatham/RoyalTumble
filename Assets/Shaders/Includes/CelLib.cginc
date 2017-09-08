@@ -46,7 +46,7 @@ fixed4 frag(VO i) : SV_Target
 	tNorm.z = -tNorm.z;
 	half3 norm = normalize(tNorm);
 	half3 dNorm = dot(norm, normalize(i.tangDL).xyz);
-	fixed3 band = tex2D(_Palette, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
+	fixed4 band = tex2D(_Palette, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
 	fixed4 tex = tex2D(_MainTex, i.uv.xy);
 	fixed4 pixel;
 
@@ -62,14 +62,14 @@ fixed4 frag(VO i) : SV_Target
 	tex.a = ceil(tex.a);
 #endif
 
-	if (tex.a == 0)
+	//if (tex.a == 0)
 	{
-		pixel = fixed4(band, 1);
+		pixel = band;
 	}
 	
-	else
+	//else
 	{
-		pixel = tex;
+		//pixel = tex;
 	}
 
 #if defined(_POINT_LIGHT)
