@@ -359,6 +359,7 @@ public class PaletteEditor : EditorWindow
         // Sets palette changes.
         if (colBands != null)
         {
+            Debug.Log("Ok");
             Color[] colours = new Color[palette.width];
             List<ColourBand> cb = SortBands();
 

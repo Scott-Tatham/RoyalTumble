@@ -2,9 +2,10 @@
 {
 	Properties
 	{
-		_MainTex("Detail Map", 2D) = "" {}
+		_MainTex("Detail Map", 2D) = "white" {}
 		_Normal("Normal Map", 2D) = "bump" {}
-		_Palette("Palette", 2D) = "white" {}
+		_PalettePrimary("Palette Primary", 2D) = "white" {}
+		_PaletteSecondary("Palette Secondary", 2D) = "black" {}
 	}
 
 	SubShader
@@ -12,14 +13,15 @@
 		Tags
 		{
 			"Lightmode" = "ForwardBase"
+			"RenderQueue" = "Transparent"
 			"IgnoreProjector" = "True"
 			"CanUseSpriteAtlas" = "True"
 		}
 
 		Pass
 		{
-			ZWrite Off
-			ZTest Off
+			ZWrite On
+			ZTest On
 			AlphaTest NotEqual 0.0
 			Blend SrcAlpha OneMinusSrcAlpha
 			
