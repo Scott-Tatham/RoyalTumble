@@ -12,7 +12,6 @@
 		Tags
 		{
 			"Lightmode" = "ForwardBase"
-			"Queue" = "Transparent"
 			"IgnoreProjector" = "True"
 			"CanUseSpriteAtlas" = "True"
 		}
