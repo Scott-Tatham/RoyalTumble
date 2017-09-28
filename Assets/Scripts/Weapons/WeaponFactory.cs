@@ -29,6 +29,9 @@ public class WeaponFactory
     JsonData weaponData;
     List<WeaponEffect> wEffects = new List<WeaponEffect>();
 
+    public string GetMesh(int weaponID) { return (string)weaponData[weaponID][1]; }
+    public string GetMaterial(int weaponID) { return (string)weaponData[weaponID][2]; }
+
     public string[] GetEffectNames()
     {
         List<string> weaponNames = new List<string>();
@@ -94,8 +97,8 @@ public class WeaponFactory
 
     public WeaponFactory()
     {
-        weaponData = File.ReadAllText("Assets/StreamData/WeaponData.json");
-        weaponObj = (GameObject)Resources.Load("Prefabs/Weapon");
+        weaponData = JsonMapper.ToObject(File.ReadAllText("Assets/StreamData/WeaponData.json"));
+        weaponObj = Resources.Load<GameObject>("Prefabs/Weapon");
         wEffects.Add(new WeaponEffect(0, "Burn", () => WeaponEffects.Burn(0, 0, 0, 0, 0, DamageType.PHYSICAL, DamageType.PHYSICAL, null, null)));
         wEffects.Add(new WeaponEffect(1, "Freeze", () => WeaponEffects.Freeze(0, 0, DamageType.PHYSICAL, null, null)));
         wEffects.Add(new WeaponEffect(2, "Knockback", () => WeaponEffects.Knockback(0, 0, DamageType.PHYSICAL, null, null)));
@@ -104,12 +107,9 @@ public class WeaponFactory
         wEffects.Add(new WeaponEffect(5, "Poison", () => WeaponEffects.Poison(0, 0, 0, 0, 0, DamageType.PHYSICAL, null, null)));
     }
 
-    public void GenerateWeapon(int weaponID, Action<Weapon> callback)
+    public Weapon GenerateWeapon(int weaponID, Weapon weapon)
     {
-        Weapon weapon = weaponObj.GetComponent<Weapon>();
         weapon.SetWeaponName((string)weaponData[weaponID][0]);
-        weapon.GetComponent<MeshFilter>().mesh = (Mesh)Resources.Load((string)weaponData[weaponID][1]);
-        weapon.GetComponent<Renderer>().material = (Material)Resources.Load((string)weaponData[weaponID][2]);
 
         for (int i = 0; i < weaponData[weaponID][3].Count; i++)
         {
@@ -147,7 +147,6 @@ public class WeaponFactory
             }
         }
 
-        callback(weapon);
-        // Call instantiation on character.
+        return weapon;
     }
 }

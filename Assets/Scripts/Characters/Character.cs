@@ -8,27 +8,44 @@ public class Character : MonoBehaviour, IHealth
     float health, rotSpeed, moveSpeed, boostSpeed, boostTime, boostCD, offSpeed, offDiv, physicalRes, fireRes, iceRes, poisonRes, windRes, earthRes, lightningRes;
 
     bool canBoost, canPulse, canRotate, canMove, boost;
-    int playerNo;
+    int playerNo, weaponCount;
     float xRot, yRot, xMove, zMove;
-    Vector3 offset;
-    Vector3 marker;
+    Vector3 offset, marker;
     Rigidbody rb;
     WeaponFactory wf;
-    List<GameObject> weapons;
+    Mesh charMesh;
+    Material charMaterial;
+    GameObject[] weaponSlots;
 
+    public int GetPlayerNo() { return playerNo; }
     public Vector3 GetOffset() { return offset; }
-    public List<GameObject> GetWeapons() { return weapons; }
+    public GameObject[] GetWeapons() { return weaponSlots; }
 
-    public void SetPlayerNo(int _playerNo) { playerNo = _playerNo; }
+    public void SetCharacterDisplay(int playerNo, int weaponCount, string materialPath)
+    {
+        this.playerNo = playerNo;
+        this.weaponCount = weaponCount;
+        weaponSlots = new GameObject[weaponCount];
+        rb = gameObject.GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        charMesh = GetComponent<MeshFilter>().mesh = Resources.Load<Mesh>("Models/Characters/Warrior");
+        charMaterial = GetComponent<MeshRenderer>().material = Resources.Load<Material>(materialPath);
+    }
+
+    public void LoadCharacter()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
+        GetComponent<MeshFilter>().mesh = charMesh;
+        GetComponent<MeshRenderer>().material = charMaterial;
+        Debug.Log(playerNo);
+    }
 
     void Start()
     {
         canBoost = true;
         canPulse = true;
-        rb = GetComponent<Rigidbody>();
         wf = GameManager.GetInstance().GetWeaponFactory();
-        weapons = new List<GameObject>();
-        //wf.GenerateWeapon(0, BuildWeapon);
     }
 
     void Update()
@@ -216,10 +233,20 @@ public class Character : MonoBehaviour, IHealth
         rb.MovePosition(transform.position + new Vector3(xMove, 0, zMove));
     }
 
-    void BuildWeapon(Weapon weapon)
+    public void BuildWeapon(int slotID, string meshPath, string materialPath, GameObject weaponObj)
     {
-        weapons.Add(weapon.gameObject);
-        //weapon.transform.position = Vector3.zero;
+        weaponSlots[slotID] = weaponObj;
+
+        if (Resources.Load<Mesh>(meshPath) != null)
+        {
+            weaponSlots[slotID].GetComponent<MeshFilter>().mesh = Resources.Load<Mesh>(meshPath);
+        }
+
+        if (Resources.Load<Material>(materialPath) != null)
+        {
+            weaponSlots[slotID].GetComponent<MeshRenderer>().material = Resources.Load<Material>(materialPath);
+        }
+        
     }
 
     IEnumerator BoostCD()

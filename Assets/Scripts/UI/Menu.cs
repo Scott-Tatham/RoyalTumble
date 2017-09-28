@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public enum MenuState
 {
-    LOGIN,
     MAIN,
     MATCH,
     LOADOUT,
@@ -14,8 +13,6 @@ public enum MenuState
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField]
-    Dropdown[] charSelect;
     [SerializeField]
     Canvas[] menuScreens;
 
@@ -27,7 +24,7 @@ public class Menu : MonoBehaviour
     public static Menu GetMenu() { return instance; }
 
     public MenuState GetMS() { return ms; }
-    public Dropdown[] GetCharSelect() { return charSelect; }
+    public Dropdown[] GetCharSelect() { return null; }
 
     void Awake()
     {
@@ -75,18 +72,5 @@ public class Menu : MonoBehaviour
         menuScreens[(int)ms].gameObject.SetActive(false);
         ms = MenuState.MAIN;
         menuScreens[(int)ms].gameObject.SetActive(true);
-    }
-
-    public void AddPlayer()
-    {
-        if (MatchManager.GetMM().AddPlayer())
-        {
-            charSelect[MatchManager.GetMM().GetNPCount() - 1].gameObject.SetActive(true);
-        }
-    }
-
-    public void StartMatch()
-    {
-        MatchManager.GetMM().StartMatch();
     }
 }

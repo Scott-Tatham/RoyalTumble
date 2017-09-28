@@ -9,7 +9,7 @@ public class Loadout : MonoBehaviour
     static Loadout instance;
 
     int charIndex;
-    JsonData tempPlayerData, charData;
+    JsonData charData;
     GameObject selectedChar;
     List<GameObject> playerChars;
 
@@ -30,24 +30,24 @@ public class Loadout : MonoBehaviour
 
     void Start()
     {
-        tempPlayerData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamData/TempPlayerData.json"));
+        charData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamData/CharacterData.json"));
         //charData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamData/CharData.json"));
         playerChars = new List<GameObject>();
 
-        for (int i = 0; i < tempPlayerData[0].Count; i++)
+        for (int i = 0; i < charData.Count; i++)
         {
-            GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/Characters/" + tempPlayerData[0][i][0].ToString()), Vector3.zero, Quaternion.identity);
-            // Insert Weapon Data.
-            Destroy(go.GetComponent<Character>());
-            go.GetComponent<Rigidbody>().useGravity = false;
-            go.SetActive(false);
-
-            for (int j = 0; j < go.transform.childCount; j++)
-            {
-                go.transform.GetChild(j).GetComponent<Rigidbody>().useGravity = false;
-            }
-            
-            playerChars.Add(go);
+            //GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/Characters/" + charData[i][0].ToString()), Vector3.zero, Quaternion.identity);
+            //// Insert Weapon Data.
+            //Destroy(go.GetComponent<Character>());
+            //go.SetActive(false);
+            //go.GetComponent<Rigidbody>().useGravity = false;
+            //
+            //for (int j = 0; j < go.transform.childCount; j++)
+            //{
+            //    go.transform.GetChild(j).GetComponent<Rigidbody>().useGravity = false;
+            //}
+            //
+            //playerChars.Add(go);
         }
     }
 

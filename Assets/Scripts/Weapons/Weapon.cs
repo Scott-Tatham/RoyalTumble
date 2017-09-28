@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     Rigidbody rb;
     WeaponFactory wf;
     GameObject player;
-    List<Action<GameObject, GameObject>> weaponE;
+    List<Action<GameObject, GameObject>> weaponE = new List<Action<GameObject, GameObject>>();
 
     public string GetWeaponName() { return weaponName; }
 
@@ -18,7 +18,6 @@ public class Weapon : MonoBehaviour
 
     void Start()
     {
-        weaponE = new List<Action<GameObject, GameObject>>();
         rb = GetComponent<Rigidbody>();
     }
 

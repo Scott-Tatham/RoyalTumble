@@ -296,8 +296,8 @@ public class WeaponCreator : EditorWindow
         if (weaponData.Count > 0)
         {
             weaponName = weaponData[selectedWeapon].weaponName;
-            weaponMesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Resources/" + weaponData[selectedWeapon].weaponMesh);
-            weaponMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/" + weaponData[selectedWeapon].weaponMaterial);
+            weaponMesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Resources/" + weaponData[selectedWeapon].weaponMesh + ".fbx");
+            weaponMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/" + weaponData[selectedWeapon].weaponMaterial + "mat");
             selectedEffects = new List<int>(weaponData[selectedWeapon].weaponEffects);
             effectFields = new List<EffectValues>(weaponData[selectedWeapon].effectValues);
         }
@@ -315,6 +315,8 @@ public class WeaponCreator : EditorWindow
     void SaveWeapon(bool update)
     {
         WeaponValues wv = new WeaponValues(weaponName, weaponMesh != null ? AssetDatabase.GetAssetPath(weaponMesh).Replace("Assets/Resources/", "") : "", weaponMaterial != null ? AssetDatabase.GetAssetPath(weaponMaterial).Replace("Assets/Resources/", "") : "", selectedEffects, effectFields);
+        wv.weaponMesh.Replace(".fbx", "");
+        wv.weaponMaterial.Replace(".mat", "");
 
         if (newWeapon || weaponData.Count == 0)
         {
