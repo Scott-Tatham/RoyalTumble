@@ -1,62 +1,15 @@
 fileFormatVersion: 2
-guid: fe1032a1b2aaea44cabe9e5a4ca9138d
-timeCreated: 1503391126
+guid: 04e0e1b28ebd87c4fb1add8158364c47
+timeCreated: 1496191323
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: Axe
-    100002: Dagger
-    100004: DoubleAxe
-    100006: Hammer
-    100008: LongishSword
-    100010: Mace
-    100012: Slashthing
-    100014: Spear
-    100016: SpikyBat
-    100018: Sword
-    100020: //RootNode
-    400000: Axe
-    400002: Dagger
-    400004: DoubleAxe
-    400006: Hammer
-    400008: LongishSword
-    400010: Mace
-    400012: Slashthing
-    400014: Spear
-    400016: SpikyBat
-    400018: Sword
-    400020: //RootNode
-    2300000: Axe
-    2300002: Dagger
-    2300004: DoubleAxe
-    2300006: Hammer
-    2300008: LongishSword
-    2300010: Mace
-    2300012: Slashthing
-    2300014: Spear
-    2300016: SpikyBat
-    2300018: Sword
-    3300000: Axe
-    3300002: Dagger
-    3300004: DoubleAxe
-    3300006: Hammer
-    3300008: LongishSword
-    3300010: Mace
-    3300012: Slashthing
-    3300014: Spear
-    3300016: SpikyBat
-    3300018: Sword
-    4300000: Spear
-    4300002: Sword
-    4300004: Slashthing
-    4300006: DoubleAxe
-    4300008: Dagger
-    4300010: LongishSword
-    4300012: Hammer
-    4300014: SpikyBat
-    4300016: Axe
-    4300018: Mace
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: pCube1
   materials:
     importMaterials: 1
     materialName: 0
@@ -87,10 +40,10 @@ ModelImporter:
     globalScale: 0.2
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -106,7 +59,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 4
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

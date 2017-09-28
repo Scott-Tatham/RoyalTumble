@@ -1,0 +1,23 @@
+[
+	{
+		"Name": "BallMan",
+		"Material Path": "Materials/Characters/GreenWarrior",
+		"Weapon IDs": [ 0, 1 ],
+		"Weapon Spots": [ 0, 1 ]
+		
+	},
+	
+	{
+		"Name": "BallDude",
+		"Material Path": "Materials/Characters/RedWarrior",
+		"Weapon IDs": [ 1, 2, 2 ],
+		"Weapon Spots": [ 0, 1, 2 ]
+	},
+	
+	{
+		"Name": "BallGuy",
+		"Material Path": "Materials/Characters/GreenWarrior",
+		"Weapon IDs": [ 1, 2 ],
+		"Weapon Spots": [ 3, 4 ]
+	}
+]

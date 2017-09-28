@@ -5,25 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MatchManager : MonoBehaviour
 {
-    struct NewPlayerData
-    {
-        int playerNo;
-
-        public NewPlayerData(int _playerNo)
-        {
-            playerNo = _playerNo;
-        }
-    }
-
     static MatchManager instance;
-
-    string[] chars;
-    List<NewPlayerData> newPlayers;
+    
     List<Character> players;
+    bool gay = true;
 
     public static MatchManager GetMM() { return instance; }
-
-    public int GetNPCount() { return newPlayers.Count; }
 
     void Awake()
     {
@@ -36,27 +23,22 @@ public class MatchManager : MonoBehaviour
         {
             Destroy(this);
         }
-
-        chars = new string[3]
-        {
-            "BallMan",
-            "BallDude",
-            "BallGuy"
-        };
-
-        newPlayers = new List<NewPlayerData>();
+        
         players = new List<Character>();
     }
 
-    public void OnSceneLoaded(Scene _scene, LoadSceneMode _mode)
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (_scene == SceneManager.GetSceneByBuildIndex(1))
+        if (scene == SceneManager.GetSceneByBuildIndex(1))
         {
-            for (int i = 0; i < newPlayers.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/Characters/" + chars[Menu.GetMenu().GetCharSelect()[i].value]), new Vector3(i * 2, 2, i * 2), Quaternion.identity);
-                players.Add(go.GetComponent<Character>());
-                go.GetComponent<Character>().SetPlayerNo(players.Count);
+                GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/Characters/Character"), new Vector3(i * 2, 2, i * 2), Quaternion.identity);
+                //go.SetActive(false);
+                Character goChar = go.GetComponent<Character>();
+                goChar = players[i];
+                Debug.Log(go + " " + goChar + " " + players[i]);
+                goChar.LoadCharacter();
             }
         }
     }
@@ -66,20 +48,16 @@ public class MatchManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public bool AddPlayer()
+    public void AddPlayer(Character character)
     {
-        if (newPlayers.Count < 4)
+        if (players.Count < 4)
         {
-            newPlayers.Add(new NewPlayerData(players.Count));
-
-            return true;
+            players.Add(character);
+            Debug.Log(character.GetPlayerNo());
         }
-
-        return false;
-    }
-
-    public void RemovePlayer()
-    {
-
+        if (gay == true)
+        {
+            Destroy (this);
+        }
     }
 }
