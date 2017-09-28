@@ -28,9 +28,6 @@
 			CGPROGRAM
 
 			#pragma shader_feature _NORMAL
-			#pragma shader_feature _FLOOR_ALPHA
-			#pragma shader_feature _ROUND_ALPHA
-			#pragma shader_feature _CEIL_ALPHA
 			#pragma shader_feature _POINT_LIGHT
 
 			#pragma vertex vert

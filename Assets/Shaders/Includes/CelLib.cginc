@@ -5,7 +5,8 @@
 
 uniform sampler2D _MainTex;
 uniform sampler2D _Normal;
-uniform sampler2D _Palette;
+uniform sampler2D _PalettePrimary;
+uniform sampler2D _PaletteSecondary;
 
 struct VI
 {
@@ -46,30 +47,17 @@ fixed4 frag(VO i) : SV_Target
 	tNorm.z = -tNorm.z;
 	half3 norm = normalize(tNorm);
 	half3 dNorm = dot(norm, normalize(i.tangDL).xyz);
-	fixed4 band = tex2D(_Palette, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
 	fixed4 tex = tex2D(_MainTex, i.uv.xy);
 	fixed4 pixel;
 
-#if defined (_FLOOR_ALPHA)
-	tex.a = floor(tex.a);
-#endif
-
-#if defined (_ROUND_ALPHA)
-	tex.a = round(tex.a);
-#endif
-
-#if defined (_CEIL_ALPHA)
-	tex.a = ceil(tex.a);
-#endif
-
-	//if (tex.a == 0)
+	if (tex.r > 0.5)
 	{
-		pixel = band;
+		pixel = tex2D(_PalettePrimary, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
 	}
 	
-	//else
+	else
 	{
-		//pixel = tex;
+		pixel = tex2D(_PaletteSecondary, fixed2((dNorm.z + 1) * 0.5, i.uv.y));
 	}
 
 #if defined(_POINT_LIGHT)
